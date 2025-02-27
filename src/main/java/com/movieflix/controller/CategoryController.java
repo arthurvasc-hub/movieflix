@@ -1,9 +1,9 @@
 package com.movieflix.controller;
 
+import com.movieflix.DTOs.CategoryDTO;
 import com.movieflix.entity.Category;
+import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.service.CategoryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,19 +19,25 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public List<Category> findAll(){
-      return categoryService.findAll();
+    public List<CategoryDTO> findAll(){
+        List<Category> categoryList = categoryService.findAll();
+        return categoryList.stream()
+                .map(CategoryMapper::toCategoryDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Category findById(@PathVariable Long id){
-        return categoryService.findById(id);
+    public CategoryDTO findById(@PathVariable Long id){
+        Category categoryById = categoryService.findById(id);
+                return CategoryMapper.toCategoryDTO(categoryById);
 
     }
 
     @PostMapping("/create")
-    public Category createCategory(@RequestBody Category category){
-        return categoryService.saveCategory(category);
+    public CategoryDTO createCategory(@RequestBody CategoryDTO request){
+        Category requestToCategory = CategoryMapper.toCategory(request);
+        Category categorySaved = categoryService.saveCategory(requestToCategory);
+        return CategoryMapper.toCategoryDTO(categorySaved);
     }
 
     @DeleteMapping("/delete/{id}")
