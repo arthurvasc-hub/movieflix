@@ -23,7 +23,7 @@ public class CategoryController {
       return categoryService.findAll();
     }
 
-    @GetMapping("/list/{id}")
+    @GetMapping("/{id}")
     public Category findById(@PathVariable Long id){
         return categoryService.findById(id);
 
