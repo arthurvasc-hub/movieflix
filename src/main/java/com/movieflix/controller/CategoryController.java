@@ -4,6 +4,9 @@ import com.movieflix.DTOs.CategoryDTO;
 import com.movieflix.entity.Category;
 import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.service.CategoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,30 +22,46 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public List<CategoryDTO> findAll(){
-        List<Category> categoryList = categoryService.findAll();
-        return categoryList.stream()
+    public ResponseEntity<List<CategoryDTO>> findAll(){
+        List<CategoryDTO> categories = categoryService.findAll()
+                .stream()
                 .map(CategoryMapper::toCategoryDTO)
                 .toList();
+        return ResponseEntity.ok(categories);
+
     }
 
     @GetMapping("/{id}")
-    public CategoryDTO findById(@PathVariable Long id){
+    public ResponseEntity<CategoryDTO> findById(@PathVariable Long id){
         Category categoryById = categoryService.findById(id);
-                return CategoryMapper.toCategoryDTO(categoryById);
 
+        if(categoryById != null) {
+        CategoryDTO category = CategoryMapper.toCategoryDTO(categoryById);
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .body(category);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(null);
     }
 
     @PostMapping("/create")
-    public CategoryDTO createCategory(@RequestBody CategoryDTO request){
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO request){
         Category requestToCategory = CategoryMapper.toCategory(request);
         Category categorySaved = categoryService.saveCategory(requestToCategory);
-        return CategoryMapper.toCategoryDTO(categorySaved);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(CategoryMapper.toCategoryDTO(categorySaved));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteCategory(@PathVariable Long id){
-        categoryService.deleteCategoryById(id);
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
+        Category categoryById = categoryService.findById(id);
+        if(categoryById != null){
+            categoryService.deleteCategoryById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .build();
     }
 
 
