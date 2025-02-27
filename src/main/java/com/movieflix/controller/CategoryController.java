@@ -6,7 +6,6 @@ import com.movieflix.mapper.CategoryMapper;
 import com.movieflix.service.CategoryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,15 +14,15 @@ import java.util.List;
 @RequestMapping("movieflix/category")
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final CategoryService service;
 
     public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+        this.service = categoryService;
     }
 
     @GetMapping()
     public ResponseEntity<List<CategoryDTO>> findAll(){
-        List<CategoryDTO> categories = categoryService.findAll()
+        List<CategoryDTO> categories = service.findAll()
                 .stream()
                 .map(CategoryMapper::toCategoryDTO)
                 .toList();
@@ -33,7 +32,7 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> findById(@PathVariable Long id){
-        Category categoryById = categoryService.findById(id);
+        Category categoryById = service.findById(id);
 
         if(categoryById != null) {
         CategoryDTO category = CategoryMapper.toCategoryDTO(categoryById);
@@ -47,16 +46,16 @@ public class CategoryController {
     @PostMapping("/create")
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO request){
         Category requestToCategory = CategoryMapper.toCategory(request);
-        Category categorySaved = categoryService.saveCategory(requestToCategory);
+        Category categorySaved = service.save(requestToCategory);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(CategoryMapper.toCategoryDTO(categorySaved));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id){
-        Category categoryById = categoryService.findById(id);
+        Category categoryById = service.findById(id);
         if(categoryById != null){
-            categoryService.deleteCategoryById(id);
+            service.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
                     .build();
         }

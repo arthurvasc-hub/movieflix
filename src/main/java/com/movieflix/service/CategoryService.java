@@ -26,13 +26,13 @@ public class CategoryService {
 
     }
 
-    public Category saveCategory(Category category){
+    public Category save(Category category){
         return repository.save(category);
     }
 
-    public void deleteCategoryById (Long id){
+    public void delete (Long id){
         repository.deleteById(id);
-        System.out.println("Usuario com o id: " + id + " deletado com sucesso.");
+        System.out.println("Category com o id: " + id + " deletado com sucesso.");
     }
 
 }
