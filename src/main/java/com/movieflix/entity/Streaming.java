@@ -1,5 +1,6 @@
 package com.movieflix.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Builder;
 
@@ -10,13 +11,14 @@ public class Streaming {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long Id;
+    private Long id;
 
     @Column(length = 100, nullable = false)
+    @JsonProperty("name")
     private String name;
 
     public Streaming(long id, String name) {
-        Id = id;
+        this.id = id;
         this.name = name;
     }
 
@@ -24,11 +26,11 @@ public class Streaming {
     }
 
     public long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(long id) {
-        Id = id;
+        id = id;
     }
 
     public String getName() {

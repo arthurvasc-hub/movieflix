@@ -1,20 +1,23 @@
 package com.movieflix.DTOs;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-
 public class StreamingDTO {
 
     private Long id;
     private String name;
 
+    public StreamingDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public StreamingDTO() {
+    }
 
     public Long getId() {
         return id;

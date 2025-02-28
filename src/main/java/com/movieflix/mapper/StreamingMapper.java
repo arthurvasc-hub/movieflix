@@ -8,8 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class StreamingMapper {
     public static Streaming toStreaming(StreamingDTO streamingDTO){
+        if (streamingDTO == null) {
+            throw new IllegalArgumentException("streamingDTO não pode ser nulo!");
+        }
+
         Streaming streaming = new Streaming();
-        streaming.setId(streamingDTO.getId());
+        if (streamingDTO.getId() != null) {
+            streaming.setId(streamingDTO.getId());
+        }
         streaming.setName(streamingDTO.getName());
 
         return streaming;
