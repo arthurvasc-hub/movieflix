@@ -10,10 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
 @Entity
 @Table(name = "movie")
 public class Movie {
@@ -53,4 +49,91 @@ public class Movie {
     joinColumns = @JoinColumn(name = "movie_id"),
     inverseJoinColumns = @JoinColumn(name = "streaming_id"))
     private List<Streaming> streamings;
+
+    public Movie(Long id, String title, String description, LocalDate releaseDate, double rating, LocalDateTime createdAt, LocalDateTime updatedAt, List<Category> categories, List<Streaming> streamings) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.rating = rating;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.categories = categories;
+        this.streamings = streamings;
+    }
+
+    public Movie() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public List<Streaming> getStreamings() {
+        return streamings;
+    }
+
+    public void setStreamings(List<Streaming> streamings) {
+        this.streamings = streamings;
+    }
 }
