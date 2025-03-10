@@ -8,17 +8,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieService {
    private final MovieRepository repository;
    private final CategoryService categoryService;
    private final StreamingService streamingService;
+    private final MovieRepository movieRepository;
 
-    public MovieService(MovieRepository repository, CategoryService categoryService, StreamingService streamingService) {
+    public MovieService(MovieRepository repository, CategoryService categoryService, StreamingService streamingService, MovieRepository movieRepository) {
         this.repository = repository;
         this.categoryService = categoryService;
         this.streamingService = streamingService;
+        this.movieRepository = movieRepository;
     }
 
     public Movie save(Movie movie){
@@ -31,7 +34,52 @@ public class MovieService {
         return repository.findAll();
     }
 
-    public List<Category> findCategories(List<Category> categories){
+    public Optional<Movie> findById(Long id){
+        Optional<Movie> movieById = repository.findById(id);
+        if(movieById.isPresent()){
+            return movieById;
+        }
+        return Optional.empty();
+    }
+
+    public List<Movie> findByCategories(Long categoryId) {
+        return movieRepository.findMovieByCategories(List.of(new Category(categoryId, null)));
+    }
+
+    public Optional<Movie> update(Long id, Movie updateMovie){
+        Optional<Movie> optMovie = repository.findById(id);
+        if(optMovie.isPresent()){
+
+            List<Category> categories = this.findCategories(updateMovie.getCategories());
+            List<Streaming> streamings = this.findStreamings(updateMovie.getStreamings());
+
+            Movie movie = optMovie.get();
+            movie.setId(id);
+            movie.setTitle(updateMovie.getTitle());
+            movie.setDescription(updateMovie.getDescription());
+            movie.setRating(updateMovie.getRating());
+
+            movie.getCategories().clear();
+            movie.getCategories().addAll(categories);
+
+            movie.getStreamings().clear();
+            movie.getStreamings().addAll(streamings);
+
+            repository.save(movie);
+
+            return Optional.of(movie);
+
+        }
+
+        return Optional.empty();
+
+    }
+
+    public void deleteById(Long movieId){
+        repository.deleteById(movieId);
+    }
+
+    private List<Category> findCategories(List<Category> categories){
         List<Category> categoryFound = new ArrayList<>();
         categories.forEach(category -> {
             Category foundCategory = categoryService.findById(category.getId());
@@ -43,7 +91,7 @@ public class MovieService {
         return categoryFound;
     }
 
-    public List<Streaming> findStreamings(List<Streaming> streamings){
+    private List<Streaming> findStreamings(List<Streaming> streamings){
         List<Streaming> streamingFound = new ArrayList<>();
         streamings.forEach(streaming -> {
             Streaming foundStreaming = streamingService.findById(streaming.getId());
@@ -54,6 +102,7 @@ public class MovieService {
 
         return streamingFound;
     }
+
 
 
 
