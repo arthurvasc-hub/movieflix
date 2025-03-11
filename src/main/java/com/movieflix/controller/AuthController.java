@@ -2,8 +2,10 @@ package com.movieflix.controller;
 
 
 import com.movieflix.DTOs.User.LoginRequest;
+import com.movieflix.DTOs.User.LoginResponse;
 import com.movieflix.DTOs.User.UserRequest;
 import com.movieflix.DTOs.User.UserResponse;
+import com.movieflix.config.TokenService;
 import com.movieflix.entity.User;
 import com.movieflix.mapper.UserMapper;
 import com.movieflix.service.UserService;
@@ -25,6 +27,7 @@ public class AuthController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
 
 
@@ -35,10 +38,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest request){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request){
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         Authentication authenticate  = authenticationManager.authenticate(userAndPass);
 
         User user = (User) authenticate.getPrincipal();
+        String token = tokenService.generateToken(user);
+
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 }

@@ -17,3 +17,6 @@ spring:
   flyway:
     enabled: true
 
+movieflix:
+  security:
+    secret: ${SECRET}
