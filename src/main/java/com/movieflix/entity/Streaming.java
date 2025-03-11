@@ -2,10 +2,14 @@ package com.movieflix.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Builder;
+import lombok.*;
 
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name="streaming")
 public class Streaming {
 
@@ -17,27 +21,4 @@ public class Streaming {
     @JsonProperty("name")
     private String name;
 
-    public Streaming(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Streaming() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

@@ -1,8 +1,8 @@
 package com.movieflix.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+
 
 @Builder
 @Entity
@@ -10,15 +10,21 @@ import lombok.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name="category")
-public class Category {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100, nullable = false)
-    @JsonProperty("name")
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
 
 }
