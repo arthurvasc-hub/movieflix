@@ -1,4 +1,4 @@
-package com.movieflix.DTOs;
+package com.movieflix.DTOs.User;
 
 import lombok.Builder;
 

@@ -1,7 +1,7 @@
 package com.movieflix.mapper;
 
-import com.movieflix.DTOs.UserRequest;
-import com.movieflix.DTOs.UserResponse;
+import com.movieflix.DTOs.User.UserRequest;
+import com.movieflix.DTOs.User.UserResponse;
 import com.movieflix.entity.User;
 import lombok.experimental.UtilityClass;
 
