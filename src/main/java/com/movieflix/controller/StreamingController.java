@@ -5,6 +5,7 @@ import com.movieflix.DTOs.StreamingDTO;
 import com.movieflix.entity.Streaming;
 import com.movieflix.mapper.StreamingMapper;
 import com.movieflix.service.StreamingService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class StreamingController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<StreamingDTO> createCategory(@RequestBody StreamingDTO request){
+    public ResponseEntity<StreamingDTO> createCategory(@Valid @RequestBody StreamingDTO request){
         Streaming requestToStreaming = StreamingMapper.toStreaming(request);
         Streaming streamingSaved = service.save(requestToStreaming);
         return ResponseEntity.status(HttpStatus.CREATED)
