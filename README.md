@@ -31,6 +31,8 @@ Spring Data JPA → Gerenciamento do banco de dados.
 
 PostgreSQL → Banco de dados relacional.
 
+Docker → Utilizado para rodar o banco de dados PostgreSQL em um contêiner, facilitando a configuração e execução do ambiente.
+
 Flyway → Controle de versões do banco de dados.
 
 Lombok → Redução de boilerplate no código.
